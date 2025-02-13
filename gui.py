@@ -10,7 +10,7 @@ def create_interface():
     main_window = tk.Tk()
     main_window.title("Scrcpy Gui test")
     main_window.geometry("500x500")
-    main_window.iconbitmap("icon.ico")
+    main_window.iconbitmap(os.path.join("resources","icon.ico"))
     # main_window.protocol("WM_DELETE_WINDOW", minimize_to_tray(main_window))
 
     # Use PanedWindow to create a left-right layout, resizable areas
