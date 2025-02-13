@@ -4,8 +4,9 @@ import tkinter as tk
 import xml.etree.cElementTree as ET
 from tkinter import Listbox, Entry, Button, Scrollbar, Frame, Message, PhotoImage, ttk
 
-path='gui_config.xml'
-process=None
+path = 'gui_config.xml'
+process = None
+
 
 def Refresh_Devices(entry0, event):
     process = subprocess.run("adb devices", shell=True, capture_output=True, text=True, check=True)
@@ -18,10 +19,12 @@ def Refresh_Devices(entry0, event):
     entry0.config(values=devicelist)
     return 0
 
+
 def Refresh_List(entry0, listbox):
     try:
         device = entry0.get()
-        process = subprocess.run(f"adb -s {device} shell pm list packages -3", shell=True, capture_output=True, text=True, check=True)
+        process = subprocess.run(f"adb -s {device} shell pm list packages -3", shell=True, capture_output=True,
+                                 text=True, check=True)
         str = process.stdout.strip()
         applist = str.splitlines(True)
         for i in range(len(applist)):
@@ -35,44 +38,46 @@ def Refresh_List(entry0, listbox):
         print(f"Scan app Err:{Exception}")
     return 0
 
-def Select_List(listbox,entry1,event):
-    selected = listbox.curselection() 
-    if selected: 
-        selected_item = listbox.get(selected) 
-        print(f"Selected:{selected_item}") 
+
+def Select_List(listbox, entry1, event):
+    selected = listbox.curselection()
+    if selected:
+        selected_item = listbox.get(selected)
+        print(f"Selected:{selected_item}")
         entry1.delete(0, tk.END)
         entry1.insert(0, selected_item)
     return 0
 
-def Setting(entry2,entry3,entry4,mode):
+
+def Setting(entry2, entry3, entry4, mode):
     if not os.path.exists(path):
         print("No config")
         try:
-            with open(path,"w") as f:
-                f.write("""<?xml version='1.0' encoding='utf-8'?>
-<settings><bitrate>5</bitrate><codec>h264</codec><arg>-S -w --shortcut-mod=lctrl --power-off-on-close</arg></settings>""")
+            with open(path, "w") as f:
+                f.write("""<?xml version='1.0' encoding='utf-8'?> <settings><bitrate>5</bitrate><codec>h264</codec><arg>-S -w --shortcut-mod=lctrl --power-off-on-close</arg><cmd></cmd></settings>""")
             print("Empty config generated")
         except Exception:
             pass
-    if(mode==0):
-        Dic=Xml_Read()
+    if mode == 0:
+        Dic = Xml_Read()
         entry2.delete(0, tk.END)
         entry2.insert(0, Dic["bitrate"])
         entry3.delete(0, tk.END)
         entry3.insert(0, Dic['codec'])
         entry4.delete(0, tk.END)
         entry4.insert(0, Dic['arg'])
-    elif(mode==1):
-        bitrate=entry2.get()
-        codec=entry3.get()
-        arg=entry4.get()
-        Xml_Write(bitrate,codec,arg)
+    elif mode == 1:
+        bitrate = entry2.get()
+        codec = entry3.get()
+        arg = entry4.get()
+        Xml_Write(bitrate, codec, arg)
     else:
         pass
     return 0
 
+
 def Xml_Read():
-    Dic={}
+    Dic = {}
     try:
         tree = ET.parse(path)
         root = tree.getroot()
@@ -82,9 +87,9 @@ def Xml_Read():
         if bitrate_element is not None:
             Dic['bitrate'] = bitrate_element.text
         else:
-            Dic['bitrate'] = None 
+            Dic['bitrate'] = None
 
-        # 查找并获取 codec 参数
+            # 查找并获取 codec 参数
         codec_element = root.find('codec')
         if codec_element is not None:
             Dic['codec'] = codec_element.text
@@ -104,46 +109,48 @@ def Xml_Read():
         pass
     return Dic
 
+
 def Xml_Write(bitrate, codec, arg):
     try:
         # 1. 创建根元素
-        root = ET.Element("settings")  
+        root = ET.Element("settings")
 
         # 2. 创建子元素 bitrate 并设置文本
         bitrate_element = ET.SubElement(root, "bitrate")
-        bitrate_element.text = str(bitrate)  
+        bitrate_element.text = str(bitrate)
 
         # 3. 创建子元素 codec 并设置文本
         codec_element = ET.SubElement(root, "codec")
-        codec_element.text = str(codec)      
+        codec_element.text = str(codec)
 
         # 4. 创建子元素 arg 并设置文本
         arg_element = ET.SubElement(root, "arg")
-        arg_element.text = str(arg)        
+        arg_element.text = str(arg)
         # 5. 创建 XML 树
         tree = ET.ElementTree(root)
 
         # 6. 写入 XML 文件
-        tree.write(path, encoding="utf-8", xml_declaration=True) 
+        tree.write(path, encoding="utf-8", xml_declaration=True)
         print(f"Saved")
 
-    except Exception: # 捕获写入过程中可能发生的异常
-        print (f"Err:{Exception}")
+    except Exception:  # 捕获写入过程中可能发生的异常
+        print(f"Err:{Exception}")
     return 0
 
-def cmd_generate(entry0, entry1,entry2,entry3,entry4):
+
+def cmd_generate(entry0, entry1, entry2, entry3, entry4):
     global process
     try:
         process.kill()
     except:
         pass
-    cmd="scrcpy.exe "
-    if(entry1.get() and entry0.get()):
-        cmd=cmd+" -s "+entry0.get()+" "+entry4.get()+"  --video-codec "+entry3.get()+" -b "+entry2.get()+"M"+" --start-app="+entry1.get()
-    else:
-        cmd=cmd+entry4.get()+"  --video-codec "+entry3.get()+" -b "+entry2.get()+"M"
+    cmd = "scrcpy.exe "
+    if entry1.get() and entry0.get():
+        cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M" + " --start-app=" + entry1.get()
+    elif entry0.get():
+        cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M"
     print(cmd)
-    process = subprocess.Popen(cmd,shell=False)
+    process = subprocess.Popen(cmd, shell=False)
     return 0
 
 # def minimize_to_tray(window):
@@ -166,6 +173,3 @@ def cmd_generate(entry0, entry1,entry2,entry3,entry4):
 #     icon = pystray.Icon("name", image, "Scrcpy Gui", menu) # 创建托盘图标
 #     icon.run_async() #  异步运行托盘图标，不阻塞 Tkinter 主循环
 #     window.icon = icon #  将 icon 对象保存为窗口的属性，方便后续访问 (例如在 show_window 函数中停止托盘图标)
-
-
-
