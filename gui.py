@@ -10,7 +10,7 @@ def create_interface():
     main_window = tk.Tk()
     main_window.title("Scrcpy Tkinter Gui")
     main_window.geometry("500x400")
-    main_window.iconphoto(False,tk.PhotoImage(file=os.path.join("resources", "icon.png")))
+    # main_window.iconphoto(False,tk.PhotoImage(file=os.path.join("resources", "icon.png")))
     ttk.Style().theme_use('vista')
 
     # Use PanedWindow to create a left-right layout, resizable areas
