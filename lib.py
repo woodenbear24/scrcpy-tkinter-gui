@@ -150,5 +150,5 @@ def cmd_generate(entry0, entry1, entry2, entry3, entry4):
     elif entry0.get():
         cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M"
     print(cmd)
-    process = subprocess.Popen(cmd, shell=False)
+    process = subprocess.Popen(cmd, shell=True)
     return 0
