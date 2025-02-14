@@ -1,2 +1,2 @@
-pyinstaller -F --icon="icon.ico" gui.py --add-data=icon.ico:icon.ico --name=scrcpy-tkinter-gui --onefile --noconsole
+pyinstaller -F --icon=icon.png gui.py --add-data=icon.png:. --name=scrcpy-tkinter-gui --onefile --noconsole
 pause
