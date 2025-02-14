@@ -140,10 +140,10 @@ def Xml_Write(bitrate, codec, arg):
 
 def cmd_generate(entry0, entry1, entry2, entry3, entry4):
     global process
-    try:
-        process.kill()
-    except:
-        pass
+    # try:
+    #     process.kill()
+    # except:
+    #     pass
     cmd = "scrcpy.exe "
     if entry1.get() and entry0.get():
         cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M" + " --start-app=" + entry1.get()
@@ -152,24 +152,3 @@ def cmd_generate(entry0, entry1, entry2, entry3, entry4):
     print(cmd)
     process = subprocess.Popen(cmd, shell=False)
     return 0
-
-# def minimize_to_tray(window):
-#     window.withdraw()  # 隐藏主窗口
-#     create_tray_icon(window) # 创建系统托盘图标
-
-# def show_window(window,icon, item):
-#     icon.stop()         #  停止托盘图标的事件循环
-#     window.after(0, window.deiconify) #  在 Tkinter 主循环中显示窗口
-
-# def quit_app(window,icon, item):
-#     icon.stop()          # 停止托盘图标的事件循环
-#     window.destroy()      # 销毁 Tkinter 窗口
-
-# def create_tray_icon(window):
-#     image = tk.PhotoImage(file="icon.gif")
-# #    image = Image.open("icon.png") #  请替换成您自己的图标文件路径
-#     menu = (pystray.MenuItem("Show Window", show_window(window)), #  "显示窗口" 菜单项
-#             pystray.MenuItem("Quit", quit_app(window)))      #  "退出" 菜单项
-#     icon = pystray.Icon("name", image, "Scrcpy Gui", menu) # 创建托盘图标
-#     icon.run_async() #  异步运行托盘图标，不阻塞 Tkinter 主循环
-#     window.icon = icon #  将 icon 对象保存为窗口的属性，方便后续访问 (例如在 show_window 函数中停止托盘图标)
