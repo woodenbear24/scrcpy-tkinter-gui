@@ -146,7 +146,7 @@ def cmd_generate(entry0, entry1, entry2, entry3, entry4):
     #     pass
     cmd = "scrcpy.exe "
     if entry1.get() and entry0.get():
-        cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M" + " --start-app=" + entry1.get()
+        cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M" + " --start-app=" + entry1.get() + "--new-display"
     elif entry0.get():
         cmd = cmd + " -s " + entry0.get() + " " + entry4.get() + "  --video-codec " + entry3.get() + " -b " + entry2.get() + "M"
     print(cmd)
